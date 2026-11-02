@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<!-- <!DOCTYPE html>: avisa ao navegador que este arquivo é HTML5 (sempre a 1ª linha) -->
+
+<html lang="pt-BR">
+<!-- <html>: tag que envolve a página inteira.
+     lang="pt-BR": atributo que informa o idioma (português do Brasil).
+     Ajuda leitores de tela a pronunciar certo e o navegador a oferecer tradução. -->
+
+<head>
+<!-- <head>: área de configurações da página. Nada daqui aparece na tela, exceto o <title> na aba. -->
+
+  <meta charset="utf-8">
+  <!-- <meta charset="utf-8">: define a codificação de caracteres.
+       Sem isso, acentos como "ç" e "ã" podem aparecer quebrados. -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- viewport: controla como a página aparece no celular.
+       width=device-width: a largura da página acompanha a largura da tela.
+       initial-scale=1: começa sem zoom.
+       viewport-fit=cover: usa a tela toda, inclusive atrás do "notch" de alguns celulares. -->
+
+  <title>Central de Ajuda Psicológica</title>
+  <!-- <title>: texto mostrado na aba do navegador e nos favoritos. -->
+
+  <meta name="description" content="Central de Ajuda Psicológica: informação, apoio emocional e caminhos para buscar ajuda. Conteúdo informativo, não substitui atendimento profissional.">
+  <!-- description: resumo da página que o Google pode mostrar nos resultados de busca. -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- <link rel="stylesheet">: carrega um arquivo CSS.
+       Aqui é do Google Fonts: traz as fontes Cinzel Decorative (negrito 700)
+       e Nunito (pesos 400 normal, 600 semi-negrito, 700 negrito).
+       display=swap: mostra o texto com fonte comum enquanto a fonte nova carrega. -->
+
+  <script>
+    /* <script>: bloco de JavaScript escrito direto no HTML.
+       Este fica aqui no head de propósito: roda ANTES da página aparecer,
+       assim o tema certo já vem aplicado e a tela não "pisca". */
+
+    try {
+      /* try { } catch { }: tenta executar o código; se der erro (ex.: o navegador
+         bloqueia o armazenamento), pula para o catch em vez de quebrar a página. */
+
+      var t = localStorage.getItem("tema");
+      /* var t: cria uma variável chamada t.
+         localStorage.getItem("tema"): busca no armazenamento do navegador o tema
+         que a pessoa escolheu antes. Se nunca escolheu, devolve null. */
+
+      document.documentElement.dataset.theme =
+        t || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+      /* document.documentElement: é a tag <html>.
+         .dataset.theme: cria o atributo data-theme="..." nela (o CSS usa isso para trocar cores).
+         t || (...): "use t; se t estiver vazio, use o que vem depois do ||".
+         matchMedia("(prefers-color-scheme: light)").matches: pergunta se o sistema
+         do usuário está no modo claro (true ou false).
+         condição ? "light" : "dark": se for true usa "light", senão usa "dark". */
+
+    } catch (e) {
+      document.documentElement.dataset.theme = "dark";
+      /* Se algo falhou, usa o tema escuro como padrão. */
+    }
+  </script>
+
+  <link rel="stylesheet" href="estilo.css">
+  <!-- Carrega o SEU arquivo de estilos (cores, tamanhos, layout).
+       href="estilo.css": caminho do arquivo, na mesma pasta deste HTML. -->
+</head>
+
+<body>
+<!-- <body>: tudo que aparece na tela fica aqui dentro. -->
+
+  <!-- ================= BIBLIOTECA DE ÍCONES ================= -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">-
+  <!-- <svg>: desenho vetorial (não perde qualidade ao ampliar).
+       width="0" height="0": tamanho zero, então este bloco é invisível.
+       Ele serve só como "estoque" de ícones para usar em outros lugares.
+       style="position:absolute": tira o elemento do fluxo da página (não ocupa espaço).
+       aria-hidden="true": leitores de tela ignoram este bloco.
+       focusable="false": impede que o teclado (Tab) pare nele (corrige um bug do Internet Explorer/Edge antigo). -->
+
+    <symbol id="i-logo" viewBox="0 0 32 32">
+    <!-- <symbol>: um ícone guardado para reutilizar depois.
+         id="i-logo": nome único para chamá-lo.
+         viewBox="0 0 32 32": define uma "grade" de 32x32 para o desenho. -->
+
+      <path class="b" d="M20 3a13 13 0 1 0 9 22A11 11 0 0 1 20 3z"/>
+      <!-- <path>: desenha uma forma. d="..." são as instruções do traçado
+           (M = mover, a = arco, z = fechar). Aqui forma uma lua em crescente.
+           class="b": classe que o CSS usa para pintar esta parte. -->
+
+      <path class="a" d="M24 8l1.2 2.8 2.8 1.2-2.8 1.2L24 16l-1.2-2.8L20 12l2.8-1.2z"/>
+      <!-- Uma estrelinha de 4 pontas (l = linha). class="a": outra cor via CSS. -->
+
+      <path class="a" d="M12 21c-3-2-4-4-3-5.5s3-1 3 .5c0-1.500 2-2 3-.5s0 3.500-3 5.500z"/>
+      <!-- Um coração pequeno (c e s = curvas). -->
+    </symbol>
+
+    <symbol id="i-star" viewBox="0 0 24 24">
+      <path d="M12 2l2.200 6.800L21 11l-6.800 2.200L12 20l-2.200-6.800L3 11l6.800-2.200z"/>
+      <!-- Estrela de 4 pontas, grade 24x24. -->
+    </symbol>
+  </svg>
+
+  <!-- ================= JANELA INICIAL (nome e nascimento) ================= -->
+  <div id="ov" role="dialog" aria-modal="true" aria-labelledby="ovt">
+  <!-- <div>: caixa genérica para agrupar elementos.
+       id="ov": nome único; o JavaScript usa para mostrar/esconder esta janela.
+       role="dialog": diz aos leitores de tela que isto é uma janela de diálogo.
+       aria-modal="true": indica que o resto da página fica bloqueado enquanto ela está aberta.
+       aria-labelledby="ovt": o título da janela é o elemento com id "ovt" (o <h2> abaixo). -->
+
+    <div class="card">
+    <!-- class="card": aplica o estilo "cartão" definido no CSS. -->
+
+      <p class="logo" style="font-size:20px">
+      <!-- <p>: parágrafo. style="font-size:20px": CSS direto na tag (tamanho da letra 20 pixels). -->
+        <svg class="lg" aria-hidden="true"><use href="#i-logo"/></svg>Central de Ajuda Psicológica
+        <!-- <use href="#i-logo">: reaproveita o ícone "i-logo" guardado lá em cima. -->
+      </p>
+
+      <h2 id="ovt" style="font-size:20px">Antes de entrar</h2>
+      <!-- <h2>: título de nível 2 (h1 é o maior, h6 o menor). -->
+
+      <p class="mut small">Isto não é cadastro médico nem avaliação. O nome só serve para personalizar as mensagens, e a data de nascimento só adapta a linguagem. Nada é enviado a serviços externos: o nome fica apenas nesta sessão do navegador e a data é descartada logo após o uso.</p>
+      <!-- class="mut small": duas classes juntas (separadas por espaço):
+           "mut" = cor apagada, "small" = letra menor. -->
+
+      <label for="nm">Nome ou apelido</label>
+      <!-- <label>: texto que descreve um campo.
+           for="nm": liga o texto ao campo com id "nm". Clicar no texto foca o campo. -->
+
+      <input id="nm" maxlength="30" autocomplete="off">
+      <!-- <input>: campo de digitar (tipo texto por padrão).
+           maxlength="30": limita a 30 caracteres.
+           autocomplete="off": o navegador não sugere valores antigos. -->
+
+      <label for="bd" style="display:block;margin-top:10px">Data de nascimento</label>
+      <!-- display:block: o label ocupa a linha inteira. margin-top:10px: 10px de espaço acima. -->
+
+      <input id="bd" type="date">
+      <!-- type="date": o navegador mostra um calendário para escolher a data. -->
+
+      <div class="err" id="oe" role="alert"></div>
+      <!-- Caixa vazia onde o JS escreve mensagens de erro.
+           role="alert": leitor de tela anuncia o texto assim que ele aparecer. -->
+
+      <p>
+        <button class="btn" id="go">Continuar</button>
+        <!-- <button>: botão clicável. O JS "escuta" o clique pelo id="go". -->
+        <button class="btn sec" id="skip">Entrar sem personalizar</button>
+        <!-- "btn sec": botão secundário (visual mais discreto). -->
+      </p>
+    </div>
+  </div>
+
+  <!-- ================= BANNER DE ACOLHIMENTO ================= -->
+  <div id="banner">
+    <span>Você não precisa resolver tudo hoje. Um passo de cada vez também é progresso.</span>
+    <!-- <span>: trecho de texto na mesma linha (sem quebrar linha como o <div>). -->
+    <button id="bx" aria-label="Fechar aviso">×</button>
+    <!-- aria-label: descrição lida por leitores de tela, já que o botão só tem um "×". -->
+  </div>
+
+  <!-- ================= CABEÇALHO ================= -->
+  <header>
+  <!-- <header>: tag semântica para o topo do site. -->
+
+    <a class="logo" href="#inicio" aria-label="Central de Ajuda Psicológica, ir para o início">
+    <!-- <a>: link.
+         href="#inicio": o # leva até o elemento com id="inicio" dentro da própria página. -->
+      <svg class="lg" aria-hidden="true"><use href="#i-logo"/></svg>Central de Ajuda<br>Psicológica
+      <!-- <br>: quebra de linha. -->
+    </a>
+
+    <a class="sos" href="#ajuda">Preciso de ajuda agora</a>
+    <!-- Atalho que rola direto até a seção de ajuda. -->
+
+    <button class="ib" id="th" aria-label="Alternar tema claro e escuro">☾</button>
+    <!-- Botão de trocar o tema. O JS lê o clique em id="th". -->
+
+    <button class="ib" id="menu" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <!-- Botão do menu no celular.
+         aria-expanded="false": informa que o menu está fechado (o JS troca para "true" ao abrir). -->
+
+    <nav id="nav" aria-label="Principal">
+    <!-- <nav>: tag semântica para o menu de navegação. -->
+      <a href="#inicio">Início</a>
+      <a href="#transtornos">Transtornos</a>
+      <a href="#simulador">Simulador</a>
+      <a href="#conquistas">Pequenas conquistas</a>
+      <a href="#ajuda">Ajuda</a>
+    </nav>
+  </header>
+
+  <main>
+  <!-- <main>: tag semântica para o conteúdo principal (só pode haver um por página). -->
+
+    <!-- ========== PÁGINA 1: INÍCIO ========== -->
+    <section class="pg" id="inicio">
+    <!-- <section>: seção temática da página.
+         class="pg": o CSS/JS usa para tratar cada seção como uma "página". -->
+
+      <div class="hero">
+      <!-- hero: área de destaque no topo. -->
+
+        <img class="art" data-img="inicio" alt="Imagem de destaque da página inicial" loading="lazy">
+        <!-- <img>: imagem. Repare que não tem "src": o JS coloca a imagem depois.
+             data-img="inicio": atributo personalizado (data-qualquercoisa) que guarda
+             uma informação para o JS saber qual imagem carregar.
+             alt="...": descrição para leitores de tela e para quando a imagem falha.
+             loading="lazy": só carrega quando a imagem estiver perto de aparecer na tela. -->
+
+        <div>
+          <h1>Central de Ajuda Psicológica</h1>
+          <!-- <h1>: título principal da página. -->
+
+          <p class="mut">Mesmo no escuro, existe caminho.</p>
+
+          <h2 id="hi" style="font-size:22px">Que bom que você está aqui.</h2>
+          <!-- id="hi": o JS pode trocar este texto para incluir o nome da pessoa. -->
+
+          <p>Você não precisa enfrentar tudo sozinho(a). Aqui há informação clara, pequenos apoios práticos e caminhos para chegar a ajuda de verdade. O que você sente é real, e não precisa ser “forte” o tempo todo.</p>
+
+          <p>
+            <a class="btn" href="#transtornos">Conhecer os transtornos</a>
+            <a class="btn sec" href="#simulador">Simulador de conselhos</a>
+            <a class="btn sec" href="#ajuda">Ajuda imediata</a>
+            <!-- Links com aparência de botão (class="btn"). -->
+          </p>
+        </div>
+      </div>
+
+      <div class="grid">
+      <!-- grid: o CSS organiza os filhos em colunas lado a lado. -->
+        <div class="card"><h3>Entender</h3><p class="small mut">Sinais, fatores de risco e quando procurar ajuda urgente.</p></div>
+        <div class="card"><h3>Respirar</h3><p class="small mut">Sugestões práticas para momentos difíceis.</p></div>
+        <div class="card"><h3>Avançar devagar</h3><p class="small mut">Anote pequenas coisas feitas, sem cobrança.</p></div>
+        <!-- <h3>: título de nível 3. -->
+      </div>
+
+      <div class="card"><p>“Pedir ajuda não é fraqueza. Descansar também faz parte do cuidado.”</p></div>
+
+      <p class="small mut">Este site é informativo e não substitui acompanhamento psicológico, psiquiátrico ou médico.</p>
+    </section>
+
+    <!-- ========== PÁGINA 2: TRANSTORNOS ========== -->
+    <section class="pg" id="transtornos">
+      <div class="row">
+      <!-- row: o CSS coloca imagem e título lado a lado. -->
+        <img class="art sm" data-img="transtornos" alt="Imagem temática da página de transtornos" loading="lazy">
+        <!-- "sm": versão pequena da imagem. -->
+        <h1>Conheça os transtornos</h1>
+      </div>
+
+      <p class="mut">Informação geral, não autodiagnóstico. Sinais parecidos podem ter causas diferentes, e só um profissional qualificado pode avaliar. Nem toda pessoa com um transtorno pensa em suicídio: o risco varia e depende de muitos fatores.</p>
+
+      <div id="cl"></div>
+      <!-- Caixa vazia de propósito: o script.js cria aqui a lista de transtornos. -->
+
+      <p class="small mut">Fontes para saber mais:
+        <a href="https://www.gov.br/saude/pt-br" target="_blank" rel="noopener">Ministério da Saúde</a> ·
+        <a href="https://www.who.int/health-topics/mental-health" target="_blank" rel="noopener">Organização Mundial da Saúde</a>
+        <!-- target="_blank": abre o link em uma nova aba.
+             rel="noopener": proteção de segurança, impede que a página aberta controle a sua. -->
+      </p>
+    </section>
+
+    <!-- ========== PÁGINA 3: SIMULADOR ========== -->
+    <section class="pg" id="simulador">
+      <h1>Simulador de conselhos</h1>
+      <p class="mut">Este é um simulador com mensagens escritas previamente e escolhidas por você. <b>Não é uma inteligência artificial</b>, não faz diagnóstico e não substitui um profissional nem um serviço de emergência. O que você escrever aqui não é enviado nem guardado.</p>
+      <!-- <b>: texto em negrito. -->
+
+      <div class="card">
+        <p><b>1. Sobre o que você quer conversar?</b></p>
+
+        <div class="chips" id="cats" role="group" aria-label="Assuntos"></div>
+        <!-- Caixa vazia: o JS cria os botões de assunto aqui.
+             role="group": agrupa os botões para leitores de tela.
+             aria-label="Assuntos": nome do grupo. -->
+
+        <label for="fl" style="display:block;margin-top:14px"><b>2. Como você está se sentindo?</b> <span class="mut small">(opcional)</span></label>
+
+        <textarea id="fl" rows="3" maxlength="400" placeholder="Se quiser, escreva em poucas palavras. Pode deixar em branco."></textarea>
+        <!-- <textarea>: campo de texto com várias linhas.
+             rows="3": altura inicial de 3 linhas.
+             maxlength="400": máximo de 400 caracteres.
+             placeholder: texto-dica que some quando a pessoa começa a digitar. -->
+
+        <p>
+          <button class="btn" id="get">Receber um conselho</button>
+          <button class="btn sec" id="rst">Escolher outro assunto</button>
+        </p>
+
+        <div class="err" id="se" role="alert"></div>
+        <!-- Mensagens de erro do simulador (ex.: nenhum assunto escolhido). -->
+      </div>
+
+      <div id="out" aria-live="polite"></div>
+      <!-- Aqui o JS escreve o conselho.
+           aria-live="polite": leitores de tela anunciam o novo texto sem interromper a fala atual. -->
+    </section>
+
+    <!-- ========== PÁGINA 4: PEQUENAS CONQUISTAS ========== -->
+    <section class="pg" id="conquistas">
+      <div class="row">
+        <img class="art sm" data-img="conquistas" alt="Imagem de crescimento e recomeço" loading="lazy" style="max-width:130px">
+        <!-- max-width:130px: a imagem nunca passa de 130 pixels de largura. -->
+        <h1>Minhas pequenas conquistas</h1>
+      </div>
+
+      <p class="mut">Pequenas ações podem ser grandes em dias difíceis. E descansar também pode ser exatamente o que você precisa hoje. Sem metas, sem pressa, sem ranking.</p>
+
+      <div class="card">
+        <label for="ti">Algo que você gostaria de fazer, no seu tempo</label>
+
+        <div style="display:flex;gap:8px;margin-top:6px">
+        <!-- display:flex: coloca os filhos (campo e botão) lado a lado.
+             gap:8px: 8 pixels de espaço entre eles. -->
+          <input id="ti" maxlength="80" placeholder="Ex.: tomar um copo de água">
+          <button class="btn" id="add">Adicionar</button>
+        </div>
+
+        <div class="err" id="te" role="alert"></div>
+
+        <p class="small mut">Ideias (opcionais):
+          <button class="chip" data-s="Arrumar a cama">arrumar a cama</button>
+          <button class="chip" data-s="Tomar banho">tomar banho</button>
+          <button class="chip" data-s="Responder uma mensagem">responder uma mensagem</button>
+          <button class="chip" data-s="Sair para tomar ar">tomar ar</button>
+          <!-- data-s: guarda o texto que o JS adiciona à lista quando o botão é clicado. -->
+        </p>
+      </div>
+
+      <div id="tm" class="card safe" hidden></div>
+      <!-- hidden: esconde o elemento. O JS remove o atributo quando quiser mostrar
+           uma mensagem de incentivo. -->
+
+      <ul class="t" id="tl"></ul>
+      <!-- <ul>: lista com marcadores. Fica vazia; o JS cria os itens <li> aqui. -->
+
+      <button class="btn sec" id="clr">Apagar todos os itens</button>
+      <p class="small mut">Os itens ficam salvos só neste navegador.</p>
+    </section>
+
+    <!-- ========== PÁGINA 5: AJUDA ========== -->
+    <section class="pg" id="ajuda">
+      <img class="art" data-img="ajuda" alt="Imagem de acolhimento e apoio" loading="lazy" style="height:170px">
+
+      <h1>Ajuda e acolhimento</h1>
+
+      <div class="card safe" id="risk">
+        <h2 style="font-size:20px">Se você está em risco agora</h2>
+        <p>Se pensa em se machucar ou tirar a própria vida, ou não consegue se manter em segurança: <b>ligue 192 (SAMU)</b> ou vá ao pronto-atendimento mais próximo. Se houver perigo imediato, <b>190</b>. Avise alguém de confiança e <b>não fique sozinho(a)</b>. Se puder, afaste-se de qualquer coisa que possa te machucar.</p>
+        <p>
+          <a class="btn" href="tel:192">Ligar 192</a>
+          <!-- href="tel:192": em celulares, o toque abre o discador já com o número. -->
+          <a class="btn" href="tel:188">Ligar 188 (CVV)</a>
+          <a class="btn sec" href="tel:190">Ligar 190</a>
+        </p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Apoio emocional</h3>
+          <p><b>CVV · 188</b><br>Conversa gratuita e sigilosa, 24 horas, por telefone. Há também chat e e-mail no <a href="https://www.cvv.org.br" target="_blank" rel="noopener">site oficial</a>. Apoio emocional não substitui atendimento médico de emergência.</p>
+          <a class="btn sec" href="tel:188">Ligar 188</a>
+        </div>
+        <div class="card">
+          <h3>Emergência médica</h3>
+          <p><b>SAMU · 192</b><br>Atendimento móvel de urgência em emergências de saúde, inclusive risco de vida por crise emocional.</p>
+          <a class="btn sec" href="tel:192">Ligar 192</a>
+        </div>
+        <div class="card">
+          <h3>Emergência policial</h3>
+          <p><b>Polícia Militar · 190</b><br>Quando houver necessidade de intervenção policial imediata.</p>
+          <a class="btn sec" href="tel:190">Ligar 190</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Atendimento de saúde</h3>
+        <p><b>UBS (Unidade Básica de Saúde):</b> porta de entrada do SUS. Pode acolher, orientar e encaminhar para psicólogo ou psiquiatra.</p>
+        <p><b>CAPS (Centro de Atenção Psicossocial):</b> atende sofrimento psíquico intenso e persistente. Alguns funcionam sem encaminhamento. Pergunte na UBS da sua região ou na secretaria de saúde da sua cidade, pois a disponibilidade varia.</p>
+        <p class="small mut">Não inclui telefone de UBS/CAPS porque cada unidade tem o seu. Procure o local no portal da sua prefeitura.</p>
+      </div>
+
+      <div class="card">
+        <h3>Como conversar com alguém de confiança</h3>
+        <p>Escolha um momento calmo e comece simples: “Tenho passado por dias difíceis e queria te contar.” Você não precisa explicar tudo. Se falar for difícil, mandar uma mensagem escrita também vale.</p>
+      </div>
+
+      <div class="card">
+        <h3>Para quem quer ajudar alguém</h3>
+        <p>Escute sem julgar, sem minimizar (“isso passa”) e sem dar bronca. Pergunte com cuidado como a pessoa está, inclusive se pensa em se machucar: perguntar não coloca a ideia na cabeça de ninguém. Incentive a busca por ajuda profissional, ofereça companhia até lá e, em risco imediato, ligue 192 e não deixe a pessoa sozinha.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+  <!-- <footer>: tag semântica para o rodapé. -->
+    <svg class="lg" aria-hidden="true"><use href="#i-logo"/></svg><br><b>Central de Ajuda Psicológica</b><br>Conteúdo informativo. Não substitui atendimento psicológico, psiquiátrico ou médico. Em emergência: SAMU 192 · Apoio emocional: CVV 188.
+  </footer>
+
+  <script src="script.js"></script>
+  <!-- <script src="...">: carrega o seu arquivo JavaScript.
+       Fica no fim do body para rodar depois que todo o HTML acima já existe;
+       assim o JS consegue encontrar os elementos pelos ids (#nm, #cl, #tl etc.). -->
+</body>
+</html>
