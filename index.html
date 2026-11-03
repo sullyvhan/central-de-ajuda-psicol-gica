@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<!-- avisa para o navegador que o arquivo é html5-->
+
+<html lang="pt-BR">
+<!--informa o idioma-->
+
+<head>
+    <!--configuração da pág, formato, identação etc-->
+
+    <meta charset="utf-8">
+    <!--define os caractres do site, sem isso as palavras com acento podem aparecer erradas-->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <!--controla como a página aparece no celular-->
+
+    <title>Central de Ajuda Psicológica</title>
+    <!--mostra o nome do site na aba do navegador-->
+
+    <meta name="description" content="Central de Ajuda Psicológica: informação, apoio emocional e caminhos para buscar ajuda. Conteúdo informativo, não substitui atendimento profissional.">
+    <!--resumo da pagina que o navegador mostra nos resultador da busca-->
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<!--muda a fonte das letras, essa em especifico é a cinzel(peguei no google)-->
+
+<script>
+    /* o bloco de Javascript direto no html, ele fica aqui propositalmente, funciona antes da página aparecer fazendo o site já vir no modo claro. */
+
+    try {
+        /*tenta executar o código; se der erro se der erro ele evita quebrar a página*/
+
+        var t = localStorage.getItem("tema");
+        /* var= cria a variavel
+        localstorage.getitem= busca o tema que a pessoa escolheu antes, se nunca escolheu devolve null (peguei essa informação no modulo de java)*/
+
+        document.documentElement.dataset.theme =
+    
+        t || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        /* pergunta se o usuario está usando modo claro ou o modo escuro e devolve um valor (true ou false) */
+
+    }catch (e) {
+        document.documentElement.dataset.theme = "dark";
+        /* se der b.o ele usa o tema escuro como padrão. */
+    }
+</script>
+
+<link rel="stylesheet" href="estilo.css">
+<!--chama a porra do css-->
+</head>
+
+<body>
+    <!--tudo que vai aparecer no site fica aqui-->
+
+    <!-- ================= BIBLIOTECA DE ÍCONES ================= -->
+     <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <!--desenho de uma lua-->
+
+         <symbol id="i-logo" viewBox="0 0 32 32">
+            <!--icone guardado para usar depois-->
+
+        <path class="b" d="M20 3a13 13 0 1 0 9 22A11 11 0 0 1 20 3z"/>
+        <!--desenho de uma lua crescendo-->
+
+        <path class="a" d="M24 8l1.2 2.8 2.8 1.2-2.8 1.2L24 16l-1.2-2.8L20 12l2.8-1.2z"/>
+      <!-- Uma estrelinha de 4 pontas -->
+
+      <path class="a" d="M12 21c-3-2-4-4-3-5.5s3-1 3 .5c0-1.500 2-2 3-.5s0 3.500-3 5.500z"/>
+      <!--um coração-->
+      </symbol>
+
+    <symbol id="i-star" viewBox="0 0 24 24">
+      <path d="M12 2l2.200 6.800L21 11l-6.800 2.200L12 20l-2.200-6.800L3 11l6.800-2.200z"/>
+      <!-- Estrela de 4 pontas-->
+    </symbol>
+    <!--essa parte dos  simbolos foram feitos com auxilio de IA, a ideia inicial era de colocar imagens porem daria muito trabaalho, então pedi um caminho alternativo ao claude e ele me explicou isso, o código foi feito a mão-->
+    </svg>
+
+    <!-- =====================página inicial====================-->
+     <div id="ov" role="dialog" aria-modal="true" aria-labelledby="ovt">
+<!--div cria umaa caixa pra agrupar outros outros elementos
+o que tem dentro dele são coisas para identificação-->
+
+<div class="card">
+    <!--serve para aplicar o css-->
+
+    <p class="logo" style="font-size:20px">
+        <!--a tag p serve para inicair um paragrafo, aqui e coloquei o css direto pra facilitar minha vida depois-->
+<svg class="lg" aria-hidden="true"><use href="#i-logo"/></svg>Central de Ajuda Psicológica
+        <!--chama o incone que guardei lá no inicio, juntamente com um texto com o nome do site-->
+    </p>
+
+    <h2 id="ovt" style="font-size:20px">Antes de entrar</h2>
+    <!--h2 é um titulo de nivel 2 ou seja é o segundo maior, aqui tambem já coloquei o css para facilitar depois-->
+
+    <p class="mut small">Isto não é cadastro médico nem uma avaliação. o nome só serve para personalizar as respostas, a data de nascimento só adapta a linguagem. Nada é enviado a serviços externos.</p>
+<!--small= letra pequena, mut= cor apagada-->
+
+
+      <label for="nm">Nome ou apelido</label>
+      <!--texto para um campo especifico-->
+
+      <input id="nm" maxlength="30" autocomplete="off">
+      <!--tranforma o campo em um campo digitavel, com o tipo de texto padrão
+      as cpnfigurações dentro permitem no max 30 caracteres, e o navegador não vai sugerir nomes já usados.-->
+
+
+      <label for="bd" style="display:block;margin-top:10px">Data de nascimento</label>
+      <!-- display:block: o label ocupa a linha inteira. margin-top:10px: 10px de espaço acima. -->
+
+      <input id="bd" type="date">
+      <!--o navegador mostra um calendário para escolher a data -->
+
+      <div class="err" id="oe" role="alert"></div>
+      <!-- Caixa vazia onde o JS escreve mensagens de erro -->
+
+      <p>
+        <button class="btn" id="go">Continuar</button>
+        <!-- <button>: botão clicável. -->
+        <button class="btn sec" id="skip">Entrar sem personalizar</button>
+        <!-- outro botão -->
+</div>
+     </div>
+
+     <!--banner-->
+     <div id="banner">
+     <span>Você não precisa resolver tudo hoje. Um passo de cada vez também é progresso.</span>
+     <!--texto que fica na mesma linha sem quebrar -->
+
+     <button id="bx" aria-label="Fechar banner">X</button>
+     <!--botão de X que faz o banner apagar-->
+     </div>
+
+     <!--======parte de cima======-->
+     <header>
+        <!--topo do site-->
+        
+     <a class="logo" href="#inicio" aria-label="Central de Ajuda Psicológica, ir para o início">
+     <!--leva até o incio-->
+
+     <svg class="lg" aria-hidden="true"><use href="#i-logo"/></svg>Central de Ajuda<br>Psicológica
+     <!--o br vai quebrar o texto passando a parte pós o br para baixo-->
+     </a>
+
+     <a class="SOS" href="#ajuda">Preciso de ajuda agora</a>
+     <!--atalho que vai direto para a area de ajuda-->
+
+     <button class="ib" id="th" aria-label="Alternar tema claro e escuro"></button>
+     <!--botão que troca a cor do site dog-->
+
+     <button class="ib" id="menu" aria-label="Abrir menu" aria-expanded="false"></button>
+    <!--botão do menu para os pobres que usam celular-->
+    
+    <nav id="nav" aria-label="principal">
+        <!--nome do menu de navegação-->
+
+        <a href="#inicio">inicio</a>
+         <a href="#transtornos">transtornos</a>
+         <a href="conselhos">conselhos</a>
+         <a href="conquistas">minhas conquistas</a>
+         <a href="ajuda">ajuda</a>
+    </nav>
+    </header>
+
+    <main>
+        <!--conteudo principal-->
+
+        <!--pag 1-->
+        <section class="pg" id="inicio">
+
+            <div class="hero">
+                <!--area destacada no topoo-->
+
+                 <img class="art" data-img="inicio" alt="Imagem de destaque da página inicial" loading="lazy">
+                 <!--colocar imagem com o jarvis dos scripts depois-->
+
+                 <div>
+                    <h1>Central de Ajuda Psicológica</h1>
+                    <!--titul principal-->
+
+                    <p class="mut">Mesmo no escuro, existe um caminho.</p>
+
+                    <h2 id="hi" style="font-size:22px;">Que bom que você está aqui</h2>
+                         <!--com o id="hi" o jarvis dos script pode trocar pelo nome da pessoa depois-->
+                    <p>Você não está sozinho(a). Aqui há infromação clara, pequenos apoios práticos e caminhos para chegar a ajuda de verdade. O que você sente é real, e não precisa ser "forte" o tempo todo.</p>
+                    <p>
+                          <a class="btn" href="#transtornos">Conhecer os transtornos</a>
+                         <a class="btn sec" href="#conselhos">conselhos</a>
+                        <a class="btn sec" href="#ajuda">Ajuda imediata</a>
+                        <!--aparencia dos butão-->
+                    </p>
+
+                 </div>
+            </div>
+
+            <div class="grid">
+                <!--o css vai organizar um do lado do outro-->
+                <div class="card"><h3>Entender</h3><p class="small mut">Sinais, fatores de risco e quando procurar ajuda urgente.</p></div>
+                <div class="card"><h3>Respirar</h3><p class="small mut">Sugestões para momentos difíceis.</p></div>
+                 <div class="card"><h3>Avançar devagar</h3><p class="small mut">Anote pequenas coisas feitas, não se cobre.</p></div>
+                 <!--o h3 é um tipo de titulo menor que o h2-->
+            </div>
+
+             <div class="card"><p>“Pedir ajuda não é fraqueza. Descansar também faz parte do cuidado.”</p></div>
+
+            <p class="small mut">Este site é informativo e não substitui acompanhamento psicológico, psiquiátrico ou médico.</p>
+        </section>
+
+        <!--transtornos-->
+    </main>
+</body>
+</html>
