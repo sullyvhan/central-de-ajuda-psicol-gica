@@ -1,0 +1,615 @@
+/* ----------TEMA ESCURO ---------- */
+
+/* Define as cores padrão do site usando CSS */
+:root {
+  --bg: #0d0a12;     /* Cor de fundo da página */
+  --bg2: #17111f;    /* Cor de fundo dos cartões */
+  --tx: #ece6f2;     /* Cor principal dos textos */
+  --mut: #b3a7c2;    /* Cor dos textos menores */
+  --ac: #e0457f;     /* Cor de destaque rosa */
+  --ac2: #9a5bc7;    /* Cor de destaque roxo */
+  --bd: #3a2a4d;     /* Cor das bordas */
+  --erro: #e5484d;   /* Cor utilizada dos erros */
+
+  /* arruma as coisas dentro daa borda sem deixar bugado e todo fudido */
+  box-sizing: border-box;
+
+  /* melhora o espaçamento do site em outros dispositivos */
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+
+/* ----------TEMA CLARO ---------- */
+
+/* mesma coisa que o tema escuro só que ao  contrario */
+:root[data-theme="light"] {
+  --bg: #f6f1f8;    /* Fundo claro da página */
+  --bg2: #ffffff;   /* Fundo branco dos cartões */
+  --tx: #241a2e;    /* Texto escuro */
+  --mut: #5d4e6d;   /* Texto secundário escuro */
+  --ac: #a3154f;    /* Destaque rosa escuro */
+  --ac2: #6a2f8f;   /* Destaque roxo escuro */
+  --bd: #d8c9e3;    /* Bordas claras */
+}
+
+
+/* ---------- 2. ESTILOS BÁSICOS ---------- */
+
+/* arruma borda e largura */
+* {
+  box-sizing: border-box;
+}
+
+/* qualquer coisa que tenha hidden como atributo vai ficar escondida*/
+[hidden] {
+  display: none !important;
+}
+
+/* evita que o titulo fique escondido pelo cabeçalho*/
+html {
+  scroll-padding-top: 90px;
+}
+
+/* define o estilo geral do site */
+body {
+  margin: 0; /* tira a margem do navegador */
+
+  /* tamanho e altura principal das linhas e fonte */
+  font: 17px/1.6 Nunito, system-ui, sans-serif;
+
+  color: var(--tx); /* Cor principal do texto */
+
+  /* efeito de brilho roxo */
+  background:
+    radial-gradient(
+      circle at 80% -10%,
+      rgba(154, 91, 199, .18),
+      transparent 50%
+    ),
+    var(--bg);
+
+  /* deixa a cor do fundo mais suave. */
+  transition: background .3s, color .3s;
+}
+
+/* fonte e margem do titulo */
+h1, h2, h3 {
+  font-family: "Cinzel Decorative", Georgia, serif;
+  margin: .3em 0;
+}
+
+/* cor dos links */
+a {
+  color: var(--ac);
+}
+
+/* destaca um elemento quando voce clica nele */
+:focus-visible {
+  outline: 3px solid var(--ac2);
+  outline-offset: 2px;
+}
+
+/* largura e espaçamento do conteudo principal*/
+main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+}
+
+/* deixa a mudança de cor do site mais suave, sem ser só um corte seco*/
+.card, input, textarea, button, summary {
+  transition: background .3s, border-color .3s, color .3s;
+}
+
+
+
+/* cor dos textos secundários. */
+.mut {
+  color: var(--mut);
+}
+
+/* deixa o texto pequeno */
+.small {
+  font-size: 14px;
+}
+
+/* mensagem de erro */
+.err {
+  color: var(--erro);
+  font-size: 14px;
+  min-height: 1.2em;
+}
+
+/* arruma a quebra de linnha */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* evita que os textos fiquem mal posicionados*/
+.row > div {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* organisa as coisas numa coluna que responsiva, sla como explicar isso, mas é isso ae, essa parte em especifico pedi pra ia me ajudar pq os textos estavam todos bugados */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+/* cor daas figurinhas */
+.a {
+  fill: var(--ac);
+}
+
+.b {
+  fill: var(--ac2);
+}
+
+
+/* ----------banner--------- */
+
+/* deixa o banner na horixontal e centraliza o texto */
+#banner {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 14px;
+  text-align: center;
+  font-size: 15px;
+  color: #fff;
+
+  /* cor do banner */
+  background: linear-gradient(90deg, #4a1d6b, #7a1f4a);
+}
+
+/* deixa o botão de fechar o banner mais bonitinho */
+#banner button {
+  background: none;
+  border: 0;
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+
+/* ---------- sla n sei como chamar essa parte---------- */
+
+/* faz com que o cabeça~ho fique vizivel durante a rolagem da paginaa*/
+header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--bd);
+}
+
+/* organiza os textos ao lado do logotipo */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  font-family: "Cinzel Decorative", Georgia, serif;
+  font-size: 15px;
+  line-height: 1.1;
+  color: var(--tx);
+  text-decoration: none;
+}
+
+/*tamanho do coiso visual do logotipo. */
+.lg {
+  width: 30px;
+  height: 30px;
+  flex: none;
+}
+
+/* Organiza os links de navegação na horizontal */
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* aparência dos links do menu. */
+nav a {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--mut);
+  text-decoration: none;
+}
+
+/* Destaca o link da página atual. */
+nav a[aria-current="page"] {
+  background: var(--ac2);
+  color: #fff;
+}
+
+
+#menu {
+  display: none;
+}
+
+/* deixa o  botão "Preciso de ajuda agora" mis bonito */
+.sos {
+  padding: 5px 12px;
+  border: 1px solid var(--ac);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ac);
+  text-decoration: none;
+}
+
+
+/* ----------butãos---------- */
+
+/*deixa os botões na sua aparencia principal */
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 24px;
+  font: inherit;
+  font-weight: 700;
+  color: #fff;
+  background: var(--ac);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* versão secundaria das cores dos botões. */
+.btn.sec {
+  color: var(--tx);
+  background: transparent;
+  border: 1px solid var(--ac2);
+}
+
+/* deixa os botões segundarios  mais bonitos */
+.ib {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--bd);
+  border-radius: 50%;
+  font-size: 18px;
+  color: var(--tx);
+  background: none;
+  cursor: pointer;
+}
+
+
+/* ---------- pagina---------- */
+
+/* permite alternar entre as paginas sem recarregar o site todo */
+.pg {
+  display: none;
+}
+
+/* animação de entrada*/
+.pg.on {
+  display: block;
+  animation: aparecer .35s;
+}
+
+/* aparencia dos cartões */
+.card {
+  margin: 14px 0;
+  padding: 18px;
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, .18);
+}
+
+/* deixa os cartões de emergência mais destacados*/
+.safe {
+  background: rgba(224, 69, 127, .1);
+  border: 2px solid var(--ac);
+}
+
+
+/* ----------IMAGENS ---------- */
+
+/* como as imagens devem se comportar emm relação ao site */
+.art {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto 14px;
+  border-radius: 16px;
+  border: 1px solid var(--bd);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .25);
+}
+
+/* faz com que as imagens mantenham sua real proporção */
+img.art {
+  height: auto;
+  object-fit: cover;
+  background: var(--bg2);
+
+
+  aspect-ratio: 16 / 9;
+}
+
+/* diminui largura das imagens com a classe sm. */
+.art.sm {
+  max-width: 230px;
+  margin: 0;
+}
+
+/* faz as imagens mais pequenas ficarem quadradas */
+img.art.sm {
+  aspect-ratio: 1;
+}
+
+/* imagens circulares */
+.bf {
+  float: right; /* deixa a imagem à direita do texto */
+  width: 56px;
+  height: 56px;
+  margin: 0 0 6px 10px;
+  border-radius: 50%;
+  border: 1px solid var(--bd);
+  object-fit: cover;
+}
+
+/* define o tamanho das figuras  . */
+.ic {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  vertical-align: -4px;
+  fill: var(--ac);
+}
+
+
+/* ----------inicio ---------- */
+
+/* centraaliza os textos e o bloco da primeira pagina */
+.hero {
+  padding: 30px 0;
+  text-align: center;
+}
+
+/*arruma o tamnho do  titulo conforme o dispositivo */
+.hero h1 {
+  font-size: clamp(30px, 6vw, 52px);
+}
+
+
+/* ---------- pagina de transtornos ---------- */
+
+/* formata caixas com o nome details*/
+details {
+  margin: 10px 0;
+  padding: 4px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+}
+
+/* formata o titulo que é  clicavel */
+summary {
+  padding: 10px 0;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* espaçamento dos parágrafos dentro das seções. */
+details p {
+  margin: .4em 0;
+}
+
+
+/* ----------conshelhos ---------- */
+
+/* deixa as opções do simulador em linhas. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* deixa cada opçãoo clicavel mais bonita */
+.chip {
+  padding: 8px 14px;
+  border: 1px solid var(--bd);
+  border-radius: 20px;
+  font: inherit;
+  color: var(--tx);
+  background: var(--bg2);
+  cursor: pointer;
+}
+
+/* Destaca a opção selecionada.
+    */
+.chip[aria-pressed="true"] {
+  color: #fff;
+  background: var(--ac2);
+  border-color: var(--ac2);
+}
+
+/* faz torulos ocuparem umma linha inteira */
+label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+/* cor, e fonte dos textos da area que da pra escrever*/
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  font: inherit;
+  color: var(--tx);
+  background: var(--bg);
+}
+
+/* deixa erros destacaados*/
+input.bad {
+  border-color: var(--erro);
+}
+
+/* deixa as coisas da área de onselhos destacadas */
+#adv {
+  font-size: 19px;
+  border-left: 4px solid var(--ac);
+}
+
+
+/* ---------area de conquisra---------- */
+
+/* Remove os marcadores padrão da lista de atividades. */
+ul.t {
+  padding: 0;
+  list-style: none;
+}
+
+/* deixa cada atividade como um cartão em formato de retngulo. */
+ul.t li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+  padding: 10px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+}
+
+/* faz o texto ocupar todo o espaço */
+ul.t li span {
+  flex: 1;
+}
+
+/* Quando o item recebe d,
+   deixa o texto apagado e riscado */
+ul.t li.d span {
+  color: var(--mut);
+  text-decoration: line-through;
+}
+
+
+/* ----------boas vindas ---------- */
+
+/* tela inivcial onde pede seus dados. */
+#ov {
+  position: fixed;
+  inset: 0; /* Ocupa todos os lados da janela */
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: auto;
+  background: var(--bg);
+}
+
+/* limita a largura do cart~ao de boas vindas */
+#ov .card {
+  width: 100%;
+  max-width: 440px;
+}
+
+
+/* ----------rodapé---------- */
+
+/* espaçamento e tamanho do texto */
+footer {
+  padding: 22px 16px;
+  font-size: 14px;
+  text-align: center;
+  color: var(--mut);
+  border-top: 1px solid var(--bd);
+}
+
+
+/* ---------- animações---------- */
+
+/* Cria uma animação ao entrar*/
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* Cria um efeito de brilho */
+@keyframes brilho {
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 22px var(--ac2);
+  }
+}
+
+/* Aplica o efeito de brilho aos elementos com a classe pop. */
+.pop {
+  animation: brilho .6s;
+}
+
+/* Desativa animações e transições */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+
+/* ---------- ajuste---------- */
+
+/* ajusta a animação em telas menores*/
+@media (min-width: 800px) {
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 30px;
+    text-align: left;
+  }
+
+  .hero .art {
+    margin: 0;
+    max-width: none;
+  }
+}
+
+/* ajusta a animaç~ao em celulares*/
+@media (max-width: 700px) {
+  #menu {
+    display: inline-block;
+  }
+
+  nav {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  /* faz o menu aparecer com o jarvis escripiti. */
+  #menu[aria-expanded="true"] + nav {
+    display: flex;
+  }
+
+  .row > div {
+    min-width: 100%;
+  }
+}
